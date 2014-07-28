@@ -15,10 +15,12 @@ def find_engineers(filename):
   """Goes through potential engineers one by one"""
 
   output = open("github_emails.txt", "w")
-  count = 1
+  count = 0
   valid_emails = []
 
   for line in open(filename):
+
+    count += 1
 
     url = call_github(line)
 
@@ -37,8 +39,6 @@ def find_engineers(filename):
       print "Request Max (20) Reached. Sleeping for 5 minutes."
       valid_emails = []
       time.sleep(300)
-
-    count += 1
 
   output.close()
 
