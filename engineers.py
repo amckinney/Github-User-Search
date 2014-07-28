@@ -3,7 +3,6 @@ import time
 import urllib
 import urllib2
 import base64
-import pyperclip
 import sys
 
 def main(argv):
