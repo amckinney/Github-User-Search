@@ -3,41 +3,66 @@ import time
 import urllib
 import urllib2
 import base64
+import pyperclip
 import sys
 
 def main(argv):
   print "Starting Engineer Search:"
-  find_engineers(argv[0])
+  uniquify(argv[0])
+  find_engineers()
 
+def uniquify(filename):
+  """ Creates an input file with unique entries. """
+  document = open("input.txt", 'w')
+  input_file = open(filename, 'r')
+  contents = input_file.read()
+  input_file.close()
+  new_list = contents.split()
+  unique_list = set(new_list)
+  for item in unique_list:
+    new_line = item + "\n"
+    document.write(new_line)
+  document.close()
 
-def find_engineers(filename):
+def find_engineers():
   """Goes through potential engineers one by one"""
 
   output = open("github_emails.txt", "w")
-  count = 0
   valid_emails = []
+  count = 0
 
-  for line in open(filename):
-
+  for line in open("input.txt", 'r'):
     count += 1
 
+    print "Search Count: " + str(count)
     url = call_github(line)
 
     if url:
-      valid_emails.append(line)
+      entry = line + "-- " + url
+      print entry
+      valid_emails.append(entry)
 
-    if count % 20 == 0:
+    if count % 30 == 0:
       valid_emails = list(set(valid_emails))
 
-      print "Added Valid Github Emails!"
       for email in valid_emails:
+        print "Adding Valid Github Emails:"
         print email
         g_email = email + "\n"
         output.write(g_email)
+        output.write("\n")
 
-      print "Request Max (20) Reached. Sleeping for 5 minutes."
+      print "Request Max (30) Reached. Sleeping for a minute."
       valid_emails = []
-      time.sleep(300)
+      time.sleep(60)
+
+  valid_emails = list(set(valid_emails))
+  for email in valid_emails:
+    print "Adding Final Entries:"
+    print email
+    g_email = email + "\n"
+    output.write(g_email)
+    output.write("\n")
 
   output.close()
 
@@ -50,9 +75,7 @@ def call_github(email):
   url = 'https://api.github.com/search/users'
   values = {'q' : '{0} in:email type:user repos:>0'.format(email) }
 
-  # TODO insert your credentials here or read them from a config file or whatever
-  # First param is username, 2nd param is passwd
-  # Without credentials, you'll be limited to 5 requests per minute
+  # TODO Insert Github credentials here. You will be limited to 30 requests per minute.
   auth_info = '{0}:{1}'.format('','')
 
   basic = base64.b64encode(auth_info)
