@@ -3,7 +3,6 @@ import time
 import urllib
 import urllib2
 import base64
-import pyperclip
 import sys
 
 def main(argv):
@@ -52,9 +51,9 @@ def find_engineers():
         output.write(g_email)
         output.write("\n")
 
-      print "Request Max (30) Reached. Sleeping for a minute."
+      print "Request Max (30) Reached. Sleeping for a 90 seconds."
       valid_emails = []
-      time.sleep(60)
+      time.sleep(90)
 
   valid_emails = list(set(valid_emails))
   for email in valid_emails:
@@ -76,7 +75,7 @@ def call_github(email):
   values = {'q' : '{0} in:email type:user repos:>0'.format(email) }
 
   # TODO Insert Github credentials here. You will be limited to 30 requests per minute.
-  auth_info = '{0}:{1}'.format('','')
+  auth_info = '{0}:{1}'.format('alexander.r.mckinney@gmail.com','Topspin33')
 
   basic = base64.b64encode(auth_info)
   headers = { 'Authorization' : 'Basic ' + basic }
