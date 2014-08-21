@@ -67,15 +67,13 @@ def find_engineers():
 
 
 def call_github(email):
-  """Calls GitHub with an email
-  Returns a user's GitHub URL, if one exists.
-  Otherwise returns None """
+  """Returns an email's Github URL"""
 
   url = 'https://api.github.com/search/users'
   values = {'q' : '{0} in:email type:user repos:>0'.format(email) }
 
   # TODO Insert Github credentials here. You will be limited to 30 requests per minute.
-  auth_info = '{0}:{1}'.format('alexander.r.mckinney@gmail.com','Topspin33')
+  auth_info = '{0}:{1}'.format('','')
 
   basic = base64.b64encode(auth_info)
   headers = { 'Authorization' : 'Basic ' + basic }
